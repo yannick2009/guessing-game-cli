@@ -7,8 +7,7 @@ fn generate_rand_num() -> u32 {
 
 fn main() {
     // what to print before the game beginning
-    println!("===== GUESSING GAME =====");
-    println!("Please input your guest.");
+    println!("===== GUESSING GAME 🎲 =====");
 
     // generate the secret number
     let secret_num: u32 = generate_rand_num();
@@ -18,12 +17,18 @@ fn main() {
         // ask for the the player guess
         let mut guess = String::new();
 
+        println!("Please input your guest.");
         io::stdin()
             .read_line(&mut guess)
             .expect("Failed to read line ⚠️");
 
         // parse the player guess (String --> u32)
-        let guess: u32 = guess.trim().parse().expect("Please type a number! ⚠️");
+        let guess: u32 = match guess.trim().parse() {
+            // if a correct number, OK
+            Ok(num) => num,
+            // if not a number, continue the loop
+            Err(_) => continue,
+        };
 
         // make the macth between the secret number and the player guess
         match guess.cmp(&secret_num) {
